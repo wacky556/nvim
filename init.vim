@@ -1,4 +1,5 @@
 let g:JavaComplete_GradleExecutable = './gradlew'
+let g:neomake_autolint_cachedir = "/home/william/.cache/nvim"
 :inoremap fj <Esc>
 :nnoremap <up> ddkP
 nnoremap <down> ddp
@@ -20,6 +21,9 @@ inoremap <LeftMouse><LeftMouse> <nop>
 inoremap <RightMouse><RightMouse> <nop>
 vnoremap <LeftMouse><LeftMouse> <nop>
 vnoremap <RightMouse><RightMouse> <nop>
+nnoremap <F12> :setlocal spell spelllang=en_us<CR>
+autocmd BufRead /tmp/mutt* setlocal spell spelllang=en_us
+autocmd BufRead /tmp/mutt* setlocal fo+=aw
 if has('nvim')
 	call plug#begin('~/.local/share/nvim/plugged')
 	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
@@ -48,9 +52,15 @@ if has('nvim')
 
 	Plug 'vim-latex/vim-latex'
 
+	Plug 'Shougo/neoinclude.vim'
+
+	Plug 'Shougo/neco-syntax'
+
+
 	call plug#end()
 	let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so'
-	let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/include/'
+	let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+	let g:deoplete#sources#clang#std#cpp = 'c++14'
 	let g:deoplete#enable_at_startup = 1
 	let g:deoplete#complete_method = 'omnifunc'
 	let g:deoplete#disable_auto_complete = 1
@@ -61,6 +71,9 @@ if has('nvim')
 				\ pumvisible() ? "\<C-n>" :
 				\ <SID>check_back_space() ? "\<TAB>" :
 				\ deoplete#mappings#manual_complete()
+
+	inoremap <silent><expr><S-TAB>
+				\ pumvisible() ? "\<C-p>" : "\<TAB>"
 	function! s:check_back_space() abort "{{{
 		let col = col('.') - 1
 		return !col || getline('.')[col - 1]  =~ '\s'
@@ -89,6 +102,12 @@ if has('nvim')
 	tnoremap <C-w><C-t> <C-\><C-n>:tabnew<CR><Esc>
 	tnoremap <C-h> <C-\><C-n>:tabp<CR>
 	tnoremap <C-l> <C-\><C-n>:tabn<CR>
+	nnoremap <F6> :wa<CR>:Neomake<CR>
+
+
+
+	autocmd! BufWritePost,BufEnter * Neomake
+
 endif
 :syntax on
 filetype plugin indent on
@@ -98,7 +117,7 @@ nnoremap <C-w><C-t> :tabnew<CR>
 nnoremap <C-w>t :tabnew<CR>
 nnoremap <F5> :GundoToggle<Cr>
 nnoremap <C-b> <C-t>
-nnoremap    <F6> :wa<CR> <bar>  :make<CR>
+"nnoremap    <F6> :wa<CR> <bar>  :make<CR>
 let mapleader = ','
 map <leader> <Plug>(easymotion-prefix)
 set nohlsearch
@@ -111,7 +130,6 @@ autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Bufread,BufNewFile *.wiki nmap <buffer> <F6> :w<CR>:VimwikiAll2HTML<CR>:e%<CR>
 let g:clang_user_options='|| exit 0'
 autocmd Filetype java nmap <buffer> <F7> :!java -jar build/*.jar<CR>
-autocmd Filetype python nmap <buffer> <F6> :wa<CR>
 autocmd Filetype python nmap <buffer> <F7> :!python
 autocmd Filetype c nmap <buffer> <F7> :!./*.out<CR>
 autocmd Filetype cpp nmap <buffer> <F7> :!./*.out<CR>
@@ -119,10 +137,9 @@ autocmd Filetype tex nmap <buffer> <F6> :wa<CR> <bar> :!pdflatex %<CR>
 autocmd Filetype tex nmap <buffer> <F7> :!evince %:t:r.pdf &<CR>
 set number
 autocmd BufWinEnter,WinEnter,TabEnter term://* startinsert
-autocmd Bufread,BufNewFile,BufWinEnter,BufEnter *.gv nmap <buffer> <F6> :wa<CR>:!dot -Tps % -o %:t:r.ps<CR>
+"autocmd Bufread,BufNewFile,BufWinEnter,BufEnter *.gv nmap <buffer> <F6> :wa<CR>:!dot -Tps % -o %:t:r.ps<CR>
 autocmd Bufread,BufNewFile *.gv nmap <buffer> <F7> :!evince %:t:r.ps &<CR>
 autocmd! BufReadPost,BufNewFile *.tex set filetype=tex
-autocmd! BufWrite * Neomake
 
 function! s:SetProjectRoot() 
 	lcd %:p:h
