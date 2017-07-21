@@ -188,7 +188,7 @@ let g:neomake_cpp_enable_markers=['clang']
 let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined","-g"]
 
 let g:neomake_python_flake8_maker = {
-			\ 'args': ['--ignore=E221,E241,E272,E251,W702,E203,E201,E202',  '--format=default'],
+			\ 'args': ['--format=default'],
 			\ 'errorformat':
 			\ '%E%f:%l: could not compile,%-Z%p^,' .
 			\ '%A%f:%l:%c: %t%n %m,' .
