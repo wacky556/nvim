@@ -183,9 +183,13 @@ let g:clang_user_options="-std=c++14"
 function s:checkTemp(blargh)
 	echom a:blargh
 endfunction
-let g:neomake_c_enable_markers=['clang']
-let g:neomake_cpp_enable_markers=['clang']
-let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined","-g"]
+let g:neomake_c_enabled_makers=['clang']
+let g:neomake_cpp_enabled_makers=['clang']
+let g:neomake_cpp_clang_args = ["-std=c++14"]
+let g:neomake_cpp_clang_maker = {
+   \ 'exe': 'clang',
+   \ 'args': ['-Wall', '-Wextra', '-Weverything', '-pedantic', '-Wno-sign-conversion'],
+   \ }
 
 let g:neomake_python_flake8_maker = {
 			\ 'args': ['--format=default'],
