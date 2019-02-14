@@ -1,14 +1,7 @@
 let g:JavaComplete_GradleExecutable = './gradlew'
 let g:neomake_autolint_cachedir = "/home/william/.cache/nvim"
-:inoremap fj <Esc>
-:nnoremap <up> ddkP
-nnoremap <down> ddp
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+inoremap fj <Esc>
+nnoremap <C-a> ggvG$
 nnoremap <RightMouse> <nop>
 nnoremap <LeftMouse> <nop>
 inoremap <LeftMouse> <nop>
@@ -56,10 +49,12 @@ if has('nvim')
 
 	Plug 'Shougo/neco-syntax'
 
+	Plug  'jalvesaq/nvim-r'
+
 
 	call plug#end()
-	let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so'
-	let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+	let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
+	let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
 	let g:deoplete#sources#clang#std#cpp = 'c++14'
 	let g:deoplete#enable_at_startup = 1
 	let g:deoplete#complete_method = 'omnifunc'
@@ -123,7 +118,7 @@ map <leader> <Plug>(easymotion-prefix)
 set nohlsearch
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 let g:clang_library_path="/usr/lib/llvm-3.8/lib"
-set completeopt=longest,menuone,noinsert
+set completeopt=longest,menuone,noinsert,noselect
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 "autocmd Filetype cpp setlocal omnifunc=ClangComplete
 "autocmd Filetype c setlocal omnifunc=syntaxcomplete#Complete
